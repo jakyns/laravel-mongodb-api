@@ -1,0 +1,22 @@
+---
+- name: install MongoDB release
+  apt: name=mongodb-org state=present
+
+- name: install php-mongodb extension
+  pear: name=pecl/mongodb state=present
+
+- name: add the mongodb extension to your mods-available file
+  shell: echo "extension=mongodb.so" | sudo tee /etc/php5/mods-available/mongodb.ini
+  args:
+    creates: /etc/php5/mods-available/mongo.ini
+
+- name: enable php5 mongodb module
+  shell: php5enmod mongodb
+
+- name: copy MongoDB configuration to MongoDB directory
+  copy:
+    src: mongod.conf
+    dest: /etc/mongod.conf
+  notify:
+    - restart apache
+    - restart mongodb

@@ -1,0 +1,14 @@
+---
+- name: install PHP packages
+  apt: name={{ item }} state=present
+  with_items:
+    - php5
+    - libapache2-mod-php5
+    - php5-dev
+    - php5-cli
+    - php5-mcrypt
+    - php5-curl
+    - php5-gd
+
+- name: enable php5 mcrypt module
+  shell: php5enmod mcrypt

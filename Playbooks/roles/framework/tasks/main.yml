@@ -1,0 +1,49 @@
+---
+- name: check project folder existing
+  stat: path={{ PROJECT_PATH }}
+  register: project_existing
+
+- name: Clone git repository
+  git:
+    repo: https://github.com/laravel/laravel.git
+    dest: "{{ PROJECT_PATH }}"
+    clone: yes
+    update: no
+  register: cloned
+  when: project_existing.stat.exists == False
+
+- name: composer create-project
+  composer: command=create-project working_dir={{ PROJECT_PATH }} optimize_autoloader=no
+  when: cloned|changed
+
+- name: composer downloads and installs the libs and dependencies
+  composer: command=install no_dev=no working_dir={{ PROJECT_PATH }}
+  become: yes
+  become_user: "{{ BECOME_USER }}"
+
+- name: copy .env file
+  shell: cp "{{ PROJECT_PATH }}/.env.example" "{{ PROJECT_PATH }}/.env"
+
+- name: generate app key
+  command: chdir={{ PROJECT_PATH }} php artisan key:generate
+
+- name: set DB_DATABASE
+  lineinfile: dest={{ PROJECT_PATH }}/.env regexp='^DB_DATABASE=' line=DB_DATABASE={{ project_env_vars.DB_NAME }}
+
+- name: set DB_USERNAME
+  lineinfile: dest={{ PROJECT_PATH }}/.env regexp='^DB_USERNAME=' line=DB_USERNAME={{ project_env_vars.DB_USER }}
+
+- name: set DB_PASSWORD
+  lineinfile: dest={{ PROJECT_PATH }}/.env regexp='^DB_PASSWORD=' line=DB_PASSWORD={{ project_env_vars.DB_PASSWORD }}
+
+- name: set DB_PORT
+  lineinfile: dest={{ PROJECT_PATH }}/.env regexp='^DB_PORT=' line=DB_PORT={{ project_env_vars.DB_PORT }}
+
+- name: chmod 775 storage folder
+  file: path={{ PROJECT_PATH }}/storage mode=0775
+
+- name: composer dump-autoload
+  composer: command=dump-autoload working_dir={{ PROJECT_PATH }} optimize_autoloader=no
+
+- name: flush all cache
+  command: chdir={{ PROJECT_PATH }} php artisan cache:clear

@@ -1,0 +1,20 @@
+---
+- name: install dependencies
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - curl
+    - mcrypt
+    - openssl
+    - pkg-config
+    - libpcre3-dev
+
+- name: MongoDB | importing the public key used by the package management system
+  command: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+
+- name: MongoDB | creating a list file
+  shell: 
+    echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list;
+
+- name: update apt cache
+  apt: update_cache=yes

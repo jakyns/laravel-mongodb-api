@@ -1,0 +1,11 @@
+---
+- name: copy .bash_profile to vagrant
+  template: 
+    src: "bash_profile.j2"
+    dest: "/home/vagrant/.bash_profile"
+
+- name: install extension packages
+  apt: name={{ item }} state=present
+  with_items:
+    - vim
+    - php5-xdebug

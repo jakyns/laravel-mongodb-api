@@ -1,0 +1,16 @@
+---
+- name: install Apache
+  apt: name=apache2 state=present
+
+- name: enabled mod_rewrite
+  apache2_module: name=rewrite state=present
+
+- name: copy vhost configuration to sites-available directory
+  template: 
+    src: vhost.j2
+    dest: "/etc/apache2/sites-available/{{ PROJECT_NAME_UNDERLINE }}.conf"
+  notify:
+    - restart apache
+
+- name: enable vhost
+  command: a2ensite {{ PROJECT_NAME_UNDERLINE }}

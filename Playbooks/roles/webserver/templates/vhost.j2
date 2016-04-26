@@ -1,0 +1,10 @@
+<VirtualHost *:80>
+    ServerName {{ PROJECT_ADDRESS }}
+    DocumentRoot {{ PROJECT_PUBLIC_PATH }}
+
+    <Directory {{ PROJECT_PUBLIC_PATH }}>
+        Options +FollowSymLinks -Indexes
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>

@@ -1,0 +1,15 @@
+---
+- hosts: vagrant
+  become: yes
+
+  vars_files:
+    - credentials/vagrant.yml
+
+  roles:
+    - dependency
+    - webserver
+    - php
+    - composer
+    - database
+    - framework
+    - extension

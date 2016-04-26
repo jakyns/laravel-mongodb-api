@@ -1,0 +1,5 @@
+[local]
+192.168.20.30
+
+[vagrant:children]
+local

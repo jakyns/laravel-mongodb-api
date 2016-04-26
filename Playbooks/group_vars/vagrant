@@ -1,0 +1,16 @@
+---
+BECOME_USER: vagrant
+
+PROJECT_ADDRESS: laravel-mongodb-api
+
+PROJECT_NAME: laravel-mongodb-api
+PROJECT_NAME_UNDERLINE: laravel_mongodb_api
+
+PROJECT_PATH: "/vagrant/api"
+PROJECT_PUBLIC_PATH: "{{ PROJECT_PATH }}/public"
+
+project_env_vars:
+  DB_NAME: "{{ PROJECT_NAME }}"
+  DB_USER: "{{ CREDENTIALS_DB_USER }}"
+  DB_PASSWORD: "{{ CREDENTIALS_DB_PASSWORD }}"
+  DB_PORT: "{{ CREDENTIALS_DB_PORT }}"
