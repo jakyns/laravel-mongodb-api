@@ -8,6 +8,7 @@ Getting up and running
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads). Tested on 5.0.14, but 4.x.x should also work.
 - [Vagrant](http://www.vagrantup.com/downloads.html). Tested on 1.8.1
 - [Ansible](http://docs.ansible.com/intro_installation.html). Tested on 2.0.1.0
+- [Laravel](https://laravel.com). Tested on 5.2.x
 
 ## Agreement
 - [PSR](http://www.php-fig.org/psr/). We are following PSR coding standards.
